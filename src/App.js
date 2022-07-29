@@ -4,10 +4,12 @@ import FlowTwo from "./components/Flows/FlowTwo";
 import FlowThree from "./components/Flows/FlowThree";
 import FlowFour from "./components/Flows/FlowFour";
 import StepCount from "./components/StepCount/StepCount";
+import Logo from "./components/Logo/Logo";
 
 function App() {
   return (
     <div className="App">
+      <Logo />
       <StepCount />
       <Routes>
         <Route path="/" element={<FlowOne />} />
