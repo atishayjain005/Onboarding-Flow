@@ -1,0 +1,35 @@
+//For all Flows
+.form-container {
+  max-width: 500px;
+}
+
+//FlowThree
+.active,
+.cardWrapper:hover {
+  cursor: pointer;
+  border: solid 1px #6965e4 !important;
+  .peopleIcon {
+    color: #6965e4;
+  }
+}
+
+.peopleIcon {
+  font-size: 30px;
+}
+
+@media only screen and (max-width: 400px) {
+  .peopleIcon {
+    font-size: 20px;
+  }
+}
+
+.checkMark {
+  font-size: 70px;
+  color: #6965e4;
+}
+
+@media only screen and (max-width: 400px) {
+  .checkMark {
+    font-size: 30px;
+  }
+}

@@ -1,0 +1,46 @@
+.step {
+  background-color: white;
+  color: black;
+  border: solid 1px #ebeef5;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  line-height: 17.5px;
+  position: relative;
+}
+
+.step-active {
+  @extend .step;
+  background-color: #6965e4;
+  color: white;
+  border: solid 1px #6965e4;
+}
+
+.line {
+  background-color: #ebeef5;
+  height: 2px;
+  background-position: center;
+  width: 100%;
+  position: absolute;
+  top: 45%;
+  z-index: -1;
+}
+
+.line-right {
+  @extend .line;
+  right: -30px;
+}
+
+.line-left {
+  @extend .line;
+  left: -30px;
+}
+
+.line-active {
+  @extend .line;
+  background-color: #6965e4;
+}
+
+.stepWrapper {
+max-width: 420px;
+}
