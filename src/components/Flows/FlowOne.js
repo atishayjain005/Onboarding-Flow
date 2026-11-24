@@ -26,12 +26,13 @@ export default function FlowOne() {
     });
   };
 
-  const handleSubmit = () => {
-    if (values.fullName.length < 4 || values.displayName.length < 4) {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (values.fullName.trim().length < 4 || values.displayName.trim().length < 4) {
       setError(true);
     } else {
       setError(false);
-      if (!saveDraft("flow-one", values)) { setStorageError(true); return; }
+      if (!saveDraft("flow-one", { fullName: values.fullName.trim(), displayName: values.displayName.trim() })) { setStorageError(true); return; }
       navigate("/stepTwo", { replace: true });
     }
   };
@@ -44,7 +45,7 @@ export default function FlowOne() {
         tagline="You can always change them later"
         textAlign="center"
       />
-      <div className="mt-5 col m-auto form-container">
+      <form onSubmit={handleSubmit} className="mt-5 col m-auto form-container">
         <div className="mb-4">
           <label htmlFor="name" className="form-label ">
             Full Name
@@ -58,9 +59,9 @@ export default function FlowOne() {
             id="name"
             onChange={handleChange}
           />
-          {values.fullName.length < 4 && error && (
-            <small className="text-danger fst-italic ">
-              *Fullname should contain more then four letters*
+          {values.fullName.trim().length < 4 && error && (
+            <small role="alert" className="text-danger fst-italic ">
+              Enter at least four non-space characters for your full name.
             </small>
           )}
         </div>
@@ -76,14 +77,14 @@ export default function FlowOne() {
             placeholder="Enter Display Name"
             onChange={handleChange}
           />
-          {values.displayName.length < 4 && error && (
-            <small className="text-danger fst-italic ">
-              *Display Name should contain more then four letters*
+          {values.displayName.trim().length < 4 && error && (
+            <small role="alert" className="text-danger fst-italic ">
+              Enter at least four non-space characters for your display name.
             </small>
           )}
         </div>
-        <Button cta={handleSubmit}>Create Workspace</Button>
-      </div>
+        <Button type="submit">Continue</Button>
+      </form>
     </div>
   );
 }

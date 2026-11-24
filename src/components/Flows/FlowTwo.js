@@ -27,12 +27,13 @@ export default function FlowTwo() {
     });
   };
 
-  const handleSubmit = () => {
-    if (values.workspaceName.length < 4) {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (values.workspaceName.trim().length < 4) {
       setError(true);
     } else {
       setError(false);
-      if (!saveDraft("flow-two", values)) { setStorageError(true); return; }
+      if (!saveDraft("flow-two", { workspaceName: values.workspaceName.trim(), url: values.url.trim() })) { setStorageError(true); return; }
       navigate("/stepThree", { replace: true });
     }
   };
@@ -45,13 +46,13 @@ export default function FlowTwo() {
         tagline="You can always create another workspace later."
         textAlign="center"
       />
-      <div className="mt-5 col m-auto form-container ">
+      <form onSubmit={handleSubmit} className="mt-5 col m-auto form-container ">
         <div className="mb-4">
           <label htmlFor="workspaceName" className="form-label ">
             Workspace Name
           </label>
           <input
-            type="email"
+            type="text"
             className="form-control  py-3"
             placeholder="Enter Workspace Name"
             name="workspaceName"
@@ -59,9 +60,9 @@ export default function FlowTwo() {
             id="workspaceName"
             onChange={handleChange}
           />
-          {values.workspaceName.length < 4 && error && (
-            <small className="text-danger fst-italic ">
-              *Workspace Name should contain more then four letters*
+          {values.workspaceName.trim().length < 4 && error && (
+            <small role="alert" className="text-danger fst-italic ">
+              Enter at least four non-space characters for your workspace name.
             </small>
           )}
         </div>
@@ -83,8 +84,8 @@ export default function FlowTwo() {
             onChange={handleChange}
           />
         </div>
-        <Button cta={handleSubmit}>Create Workspace</Button>
-      </div>
+        <Button type="submit">Continue</Button>
+      </form>
     </div>
   );
 }

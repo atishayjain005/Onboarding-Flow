@@ -1,3 +1,3 @@
-#button {
-  background-color: #6865e4;
-}
+.flow-button { background-color: #514bb8; border: 0; }
+.flow-button:hover { background-color: #433c9c; }
+.flow-button:focus-visible { outline: 3px solid #27215d; outline-offset: 3px; }
