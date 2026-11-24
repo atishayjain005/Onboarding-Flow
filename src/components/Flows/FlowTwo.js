@@ -1,20 +1,18 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+
+import { readDraft, saveDraft } from "../../draftStorage";
 
 import Button from "../Button/Button";
 import Header from "../Header/Header";
 
 import "./flows.scss";
 
-const initialState = {
-  workspaceName: "",
-  url: "",
-};
-
 export default function FlowTwo() {
   let navigate = useNavigate();
 
-  const [values, setValues] = useState(initialState);
+  const [values, setValues] = useState(() => readDraft("flow-two", ['workspaceName', 'url']));
+  const [storageError, setStorageError] = useState(false);
   const [error, setError] = useState(false);
 
   const handleChange = (e) => {
@@ -29,39 +27,45 @@ export default function FlowTwo() {
     });
   };
 
-  const handleSubmit = () => {
-    if (values.workspaceName.length < 4) {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (values.workspaceName.trim().length < 4) {
       setError(true);
     } else {
       setError(false);
-      localStorage.setItem("flow-two", JSON.stringify(values));
+      if (!saveDraft("flow-two", { workspaceName: values.workspaceName.trim(), url: values.url.trim() })) { setStorageError(true); return; }
       navigate("/stepThree", { replace: true });
     }
   };
 
+  const profile = readDraft("flow-one", ["fullName", "displayName"]);
+  if (!profile.fullName.trim() || !profile.displayName.trim()) return <Navigate to="/" replace />;
+
   return (
     <div className="container">
+      {storageError && <p role="alert">Your browser could not save this step. Allow site storage and try again. Your entries are still here.</p>}
       <Header
         headerText="Let's setup home for all your work"
         tagline="You can always create another workspace later."
         textAlign="center"
       />
-      <div className="mt-5 col m-auto form-container ">
+      <form onSubmit={handleSubmit} className="mt-5 col m-auto form-container ">
         <div className="mb-4">
           <label htmlFor="workspaceName" className="form-label ">
             Workspace Name
           </label>
           <input
-            type="email"
+            type="text"
             className="form-control  py-3"
             placeholder="Enter Workspace Name"
             name="workspaceName"
+            value={values.workspaceName}
             id="workspaceName"
             onChange={handleChange}
           />
-          {values.workspaceName.length < 4 && error && (
-            <small className="text-danger fst-italic ">
-              *Workspace Name should contain more then four letters*
+          {values.workspaceName.trim().length < 4 && error && (
+            <small role="alert" className="text-danger fst-italic ">
+              Enter at least four non-space characters for your workspace name.
             </small>
           )}
         </div>
@@ -78,12 +82,13 @@ export default function FlowTwo() {
             className="form-control py-3"
             id="basic-url"
             name="url"
+            value={values.url}
             aria-describedby="basic-addon3"
             onChange={handleChange}
           />
         </div>
-        <Button cta={handleSubmit}>Create Workspace</Button>
-      </div>
+        <Button type="submit">Continue</Button>
+      </form>
     </div>
   );
 }

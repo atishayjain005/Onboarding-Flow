@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { readDraft, saveDraft } from "../../draftStorage";
+
 import Button from "../Button/Button";
 import Header from "../Header/Header";
 
 import "./flows.scss";
 
-const initialState = {
-  fullName: "",
-  displayName: "",
-};
-
 export default function FlowOne() {
   let navigate = useNavigate();
-  const [values, setValues] = useState(initialState);
+  const [values, setValues] = useState(() => readDraft("flow-one", ['fullName', 'displayName']));
+  const [storageError, setStorageError] = useState(false);
   const [error, setError] = useState(false);
 
   const handleChange = (e) => {
@@ -28,24 +26,26 @@ export default function FlowOne() {
     });
   };
 
-  const handleSubmit = () => {
-    if (values.fullName.length < 4 || values.displayName.length < 4) {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (values.fullName.trim().length < 4 || values.displayName.trim().length < 4) {
       setError(true);
     } else {
       setError(false);
-      localStorage.setItem("flow-one", JSON.stringify(values));
+      if (!saveDraft("flow-one", { fullName: values.fullName.trim(), displayName: values.displayName.trim() })) { setStorageError(true); return; }
       navigate("/stepTwo", { replace: true });
     }
   };
 
   return (
     <div className="container">
+      {storageError && <p role="alert">Your browser could not save this step. Allow site storage and try again. Your entries are still here.</p>}
       <Header
         headerText="Welcome! First things first"
         tagline="You can always change them later"
         textAlign="center"
       />
-      <div className="mt-5 col m-auto form-container">
+      <form onSubmit={handleSubmit} className="mt-5 col m-auto form-container">
         <div className="mb-4">
           <label htmlFor="name" className="form-label ">
             Full Name
@@ -55,12 +55,13 @@ export default function FlowOne() {
             className="form-control  py-3"
             placeholder="Enter Name"
             name="fullName"
+            value={values.fullName}
             id="name"
             onChange={handleChange}
           />
-          {values.fullName.length < 4 && error && (
-            <small className="text-danger fst-italic ">
-              *Fullname should contain more then four letters*
+          {values.fullName.trim().length < 4 && error && (
+            <small role="alert" className="text-danger fst-italic ">
+              Enter at least four non-space characters for your full name.
             </small>
           )}
         </div>
@@ -72,17 +73,18 @@ export default function FlowOne() {
             className="form-control py-3"
             id="displayName"
             name="displayName"
+            value={values.displayName}
             placeholder="Enter Display Name"
             onChange={handleChange}
           />
-          {values.displayName.length < 4 && error && (
-            <small className="text-danger fst-italic ">
-              *Display Name should contain more then four letters*
+          {values.displayName.trim().length < 4 && error && (
+            <small role="alert" className="text-danger fst-italic ">
+              Enter at least four non-space characters for your display name.
             </small>
           )}
         </div>
-        <Button cta={handleSubmit}>Create Workspace</Button>
-      </div>
+        <Button type="submit">Continue</Button>
+      </form>
     </div>
   );
 }

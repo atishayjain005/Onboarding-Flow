@@ -1,46 +1,6 @@
-.step {
-  background-color: white;
-  color: black;
-  border: solid 1px #ebeef5;
-  border-radius: 50%;
-  height: 50px;
-  width: 50px;
-  line-height: 17.5px;
-  position: relative;
-}
-
-.step-active {
-  @extend .step;
-  background-color: #6965e4;
-  color: white;
-  border: solid 1px #6965e4;
-}
-
-.line {
-  background-color: #ebeef5;
-  height: 2px;
-  background-position: center;
-  width: 100%;
-  position: absolute;
-  top: 45%;
-  z-index: -1;
-}
-
-.line-right {
-  @extend .line;
-  right: -30px;
-}
-
-.line-left {
-  @extend .line;
-  left: -30px;
-}
-
-.line-active {
-  @extend .line;
-  background-color: #6965e4;
-}
-
-.stepWrapper {
-max-width: 420px;
-}
+.steps { display: flex; justify-content: space-between; list-style: none; padding: 0; margin: auto; max-width: 420px; gap: .5rem; }
+.steps li { text-align: center; font-size: .85rem; }
+.steps span { display: block; border: 1px solid #757575; border-radius: 50%; width: 44px; height: 44px; line-height: 42px; margin: 0 auto .5rem; }
+.steps [aria-current="step"] span { background: #514bb8; border-color: #514bb8; color: white; }
+.steps a { color: #433c9c; }
+.steps a:focus-visible { outline: 3px solid #514bb8; outline-offset: 4px; }

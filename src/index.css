@@ -1,6 +1,10 @@
-body {
-  height: 100vh;
-  /* width: 100vw; */
-  display: flex;
-  justify-content: center;
+body { margin: 0; min-width: 280px; }
+.App { max-width: 850px; margin: 0 auto; padding: 0 1rem 3rem; }
+h1, .summary { overflow-wrap: anywhere; }
+img { max-width: 100%; height: auto; }
+input:focus-visible { outline: 3px solid #514bb8; outline-offset: 2px; }
+@media (max-width: 400px) {
+  .usage-options { grid-template-columns: 1fr; }
+  .input-group { flex-wrap: wrap; }
+  .input-group .form-control { min-width: 0; }
 }
