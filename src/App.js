@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import FlowOne from "./components/Flows/FlowOne";
 import FlowTwo from "./components/Flows/FlowTwo";
 import FlowThree from "./components/Flows/FlowThree";
@@ -16,6 +16,7 @@ function App() {
         <Route path="/stepTwo" element={<FlowTwo />} />
         <Route path="/stepThree" element={<FlowThree />} />
         <Route path="/stepFour" element={<FlowFour />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
   );

@@ -1,4 +1,6 @@
 import React from "react";
+import { Navigate } from "react-router-dom";
+import { readDraft } from "../../draftStorage";
 import { BsCheckCircleFill } from "react-icons/bs";
 
 import Header from "../Header/Header";
@@ -6,7 +8,9 @@ import Header from "../Header/Header";
 import "./flows.scss";
 
 export default function FlowFour() {
-  const displayName = JSON.parse(localStorage.getItem("flow-one"));
+  const displayName = readDraft("flow-one", ["fullName", "displayName"]);
+
+  if (!displayName.fullName.trim() || !displayName.displayName.trim()) return <Navigate to="/" replace />;
 
   return (
     <div className="container">

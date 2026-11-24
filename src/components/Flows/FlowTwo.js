@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { readDraft, saveDraft } from "../../draftStorage";
+
 import Button from "../Button/Button";
 import Header from "../Header/Header";
 
 import "./flows.scss";
 
-const initialState = {
-  workspaceName: "",
-  url: "",
-};
-
 export default function FlowTwo() {
   let navigate = useNavigate();
 
-  const [values, setValues] = useState(initialState);
+  const [values, setValues] = useState(() => readDraft("flow-two", ['workspaceName', 'url']));
+  const [storageError, setStorageError] = useState(false);
   const [error, setError] = useState(false);
 
   const handleChange = (e) => {
@@ -34,13 +32,14 @@ export default function FlowTwo() {
       setError(true);
     } else {
       setError(false);
-      localStorage.setItem("flow-two", JSON.stringify(values));
+      if (!saveDraft("flow-two", values)) { setStorageError(true); return; }
       navigate("/stepThree", { replace: true });
     }
   };
 
   return (
     <div className="container">
+      {storageError && <p role="alert">Your browser could not save this step. Allow site storage and try again. Your entries are still here.</p>}
       <Header
         headerText="Let's setup home for all your work"
         tagline="You can always create another workspace later."
@@ -56,6 +55,7 @@ export default function FlowTwo() {
             className="form-control  py-3"
             placeholder="Enter Workspace Name"
             name="workspaceName"
+            value={values.workspaceName}
             id="workspaceName"
             onChange={handleChange}
           />
@@ -78,6 +78,7 @@ export default function FlowTwo() {
             className="form-control py-3"
             id="basic-url"
             name="url"
+            value={values.url}
             aria-describedby="basic-addon3"
             onChange={handleChange}
           />
