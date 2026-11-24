@@ -32,6 +32,6 @@ Local tests and build pass; desktop keyboard and 320/768/1280px browser checks w
 
 The legacy react-scripts dependency tree has **84 audit findings: 7 critical, 41 high, 22 moderate, 14 low** as of 25 November 2026. This is a release blocker, not a production-ready claim. Do not use a forced audit fix without scoping and validating the resulting toolchain changes.
 
-No Pages configuration or repository homepage was present during inspection. Reuse an existing free hosting integration if available; otherwise deployment remains backlog. Build, push, preview, and production release are separate states.
+No Pages configuration or repository homepage was present during inspection. PR creation revealed an existing Netlify integration (legendary-gumdrop-fb48cd). A bundled SPA fallback supports direct route reloads; preview verification and dependency remediation remain release checks. Build, push, preview, and production release are separate states.
 
 See [the improvement log](docs/improvement-log.md) for scoped ideas and remaining work.
