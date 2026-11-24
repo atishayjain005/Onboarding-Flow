@@ -29,3 +29,18 @@ test("blocked storage keeps entered text visible", () => {
   expect(screen.getByRole("alert")).toHaveTextContent("could not save");
   expect(screen.getByLabelText("Full Name")).toHaveValue("Ada Lovelace");
 });
+
+test("usage choice is persisted and completion describes a demo", () => {
+  localStorage.setItem("flow-one", JSON.stringify({fullName: "Ada Lovelace", displayName: "Ada L"}));
+  localStorage.setItem("flow-two", JSON.stringify({workspaceName: "Research"}));
+  open("/stepThree");
+  fireEvent.click(screen.getByRole("radio", {name: /With my team/}));
+  fireEvent.click(screen.getByRole("button", {name: "Complete demo"}));
+  expect(JSON.parse(localStorage.getItem("flow-three"))).toEqual({usage: "team"});
+  expect(screen.getByText(/No account or live workspace/)).toBeInTheDocument();
+  expect(screen.getByText("Research · Team workspace")).toBeInTheDocument();
+});
+test("direct usage route requires a profile", () => {
+  open("/stepThree");
+  expect(screen.getByLabelText("Full Name")).toBeInTheDocument();
+});
