@@ -38,3 +38,6 @@
 .usage-options label { cursor: pointer; gap: .5rem; }
 .usage-options label:focus-within { outline: 3px solid #514bb8; outline-offset: 2px; }
 .usage-options input { width: 1.25rem; height: 1.25rem; accent-color: #514bb8; }
+@media (max-width: 400px) {
+  .usage-options { grid-template-columns: 1fr; }
+}

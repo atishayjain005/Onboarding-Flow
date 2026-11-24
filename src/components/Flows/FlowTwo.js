@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 
 import { readDraft, saveDraft } from "../../draftStorage";
 
@@ -37,6 +37,9 @@ export default function FlowTwo() {
       navigate("/stepThree", { replace: true });
     }
   };
+
+  const profile = readDraft("flow-one", ["fullName", "displayName"]);
+  if (!profile.fullName.trim() || !profile.displayName.trim()) return <Navigate to="/" replace />;
 
   return (
     <div className="container">

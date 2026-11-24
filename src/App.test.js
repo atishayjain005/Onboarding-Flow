@@ -44,3 +44,16 @@ test("direct usage route requires a profile", () => {
   open("/stepThree");
   expect(screen.getByLabelText("Full Name")).toBeInTheDocument();
 });
+
+test("completed steps support editing without losing drafts", () => {
+  localStorage.setItem("flow-one", JSON.stringify({fullName: "Ada Lovelace", displayName: "Ada L"}));
+  open("/stepTwo");
+  expect(screen.getByRole("main")).toHaveFocus();
+  fireEvent.click(screen.getByRole("link", {name: "1 Profile"}));
+  expect(screen.getByLabelText("Full Name")).toHaveValue("Ada Lovelace");
+  expect(screen.getByRole("navigation")).toHaveAccessibleName("Onboarding progress");
+});
+test("unknown URLs recover to the profile", () => {
+  open("/missing");
+  expect(screen.getByLabelText("Full Name")).toBeInTheDocument();
+});
